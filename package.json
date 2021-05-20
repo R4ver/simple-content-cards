@@ -1,0 +1,16 @@
+{
+  "name": "portfolio-cards",
+  "version": "1.0.0",
+  "description": "A small card grid for portfolios to showcase images or cases with github as content host.",
+  "main": "index.js",
+  "repository": "git@github.com:R4ver/simple-portfolio-cards.git",
+  "author": "R4ver",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "preact": "^10.5.13"
+  },
+  "devDependencies": {
+    "parcel": "^2.0.0-beta.2"
+  }
+}
