@@ -7,13 +7,15 @@
     "license": "MIT",
     "private": false,
     "scripts": {
-        "start": "parcel watch ./src/index.js ./src/scc.scss"
+        "start": "parcel watch ./src/index.js ./src/demo.js ./src/scc.scss ./src/demo.scss"
     },
     "alias": {
         "Components": "./src/components",
         "Store": "./src/store"
     },
-    "dependencies": {},
+    "dependencies": {
+        "faker": "^5.5.3"
+    },
     "devDependencies": {
         "@parcel/transformer-sass": "2.0.0-nightly.680",
         "eslint": "^7.26.0",
