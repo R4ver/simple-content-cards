@@ -1,6 +1,11 @@
+$brand: var(--color-brand);
+$grid-cols: var(--grid-cols);
+$border-radius: var(--border-radius);
+$box-shadow: var(--box-shadow);
+
 .scc-wrapper {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat($grid-cols, 1fr);
     gap: 16px;
 
     .scc-card {
@@ -10,8 +15,17 @@
         align-items: flex-start;
         justify-content: flex-end;
         align-items: stretch;
-        border-radius: 5px;
+        width: 100%;
+        height: 0;
+        padding-top: calc(100% / (16 / 9));
         overflow: hidden;
+
+        border-radius: $border-radius;
+        box-shadow: $box-shadow;
+
+        img {
+            height: auto;
+        }
     }
 
     .scc-header {
@@ -29,7 +43,7 @@
         height: 100%;
         z-index: 1;
 
-        background: linear-gradient(to top, #ff1961, transparent);
+        background: linear-gradient(to top, $brand, transparent);
         opacity: 0.5;
     }
 
@@ -48,6 +62,8 @@
     }
 
     .scc-header-image {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
         z-index: 1;
     }

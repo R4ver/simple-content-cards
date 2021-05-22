@@ -12,7 +12,7 @@ if ( SCCWrapper ) {
             excerpt: "Some product description shortened down for now",
             twitter: "R4verLIVE",
             instagram: "R4verLIVE",
-            images: image.nature(),
+            images: "https://picsum.photos/1280/720", //image.nature(),
         };
         
         const slug = keys.title.split( " " ).join( "-" ).toLowerCase();
