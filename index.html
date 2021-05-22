@@ -30,12 +30,33 @@
         <!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png"> -->
         <!-- <link rel="manifest" href="/my.webmanifest"> -->
         <meta name="theme-color" content="#ff1961" />
-        <link rel="stylesheet" href="./dist/demo.css">
-        <link rel="stylesheet" href="./dist/scc.css" />
+        <link rel="stylesheet" href="./src/demo.scss" />
+        <link rel="stylesheet" href="./src/scc.scss" />
     </head>
 
     <body>
-        <div data-scc-wrapper></div>
+        <div id="innerContent">
+            <div id="page-header">
+                <h1 class="page-title">Portfolio</h1>
+                <h2 class="page-subtitle">My super awesome portfolio</h2>
+            </div>
+            <div data-scc-wrapper>
+                <a
+                    href="rustic-fresh-towels"
+                    data-title="Rustic Fresh Towels"
+                    data-tags="Bike, tan, Soft"
+                    data-content="The beautiful range of Apple Naturalé that has an exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients"
+                    data-excerpt="Some product description shortened down for now"
+                    data-twitter="R4verLIVE"
+                    data-instagram="R4verLIVE"
+                    data-images="http://placeimg.com/640/480/nature"
+                    data-scc-id="rustic-fresh-towels-1621701050166"
+                    class="scc-card"
+                    data-slug="rustic-fresh-towels"
+                >
+                </a>
+            </div>
+        </div>
         <script>
             var SPCConfig = {
                 theme: {
@@ -44,7 +65,7 @@
                 },
             };
         </script>
-        <script src="./dist/demo.js"></script>
-        <script src="./dist/index.js"></script>
+        <script src="./src/demo.js"></script>
+        <script src="./src/index.js"></script>
     </body>
 </html>

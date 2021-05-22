@@ -7,7 +7,7 @@
     "license": "MIT",
     "private": false,
     "scripts": {
-        "start": "parcel watch ./src/index.js ./src/demo.js ./src/scc.scss ./src/demo.scss"
+        "start": "parcel index.html"
     },
     "alias": {
         "Components": "./src/components",
