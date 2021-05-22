@@ -1,16 +1,13 @@
-import { h, render } from "preact";
+import SCC from "./scc";
 
-const App = () => <h1>Hello world</h1>
+/**
+ * Check if there's a SCC wrapper before initializing
+ */
+const SCCWrapper = document.querySelector( "[data-scc-wrapper]" );
 
-try {
-    const Wrapper = document.querySelector("[data-spc-wrapper]");
-
-    if (Wrapper) {
-        console.log(Wrapper);
-        render(<App />, Wrapper);
-    } else {
-        throw new Error("No element with the dataset 'data-spc-wrapper'");
-    }
-} catch (error) {
-    console.error(error);
+if ( SCCWrapper ) {
+    SCCWrapper.classList.add( "scc-wrapper" );
+    SCC( SCCWrapper.children );
+} else {
+    console.error( "No Simple Content Cards wrapper found." );
 }
