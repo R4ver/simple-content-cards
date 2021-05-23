@@ -1,4 +1,5 @@
 import SCC from "./scc";
+import { createElement, render } from "./helpers";
 
 /**
  * Check if there's a SCC wrapper before initializing
@@ -6,8 +7,11 @@ import SCC from "./scc";
 const SCCWrapper = document.querySelector( "[data-scc-wrapper]" );
 
 if ( SCCWrapper ) {
-    SCCWrapper.classList.add( "scc-wrapper" );
-    SCC( SCCWrapper.children );
+
+    const App = createElement( "div", { className: "scc-wrapper" }, ...SCC( SCCWrapper.children ) );
+
+    console.log( App );
+    render( App, SCCWrapper );
 } else {
     console.error( "No Simple Content Cards wrapper found." );
 }

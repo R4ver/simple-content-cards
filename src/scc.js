@@ -2,51 +2,94 @@ import { createElement, appendChildren } from "./helpers";
 
 const routes = {};
 
-const SCC = ( wrapperChildren ) => {
-    for ( let i = 0; i < wrapperChildren.length; i++ ) {
-        const child = wrapperChildren[i];
-        const slug = child.dataset.title.split( " " ).join( "-" ).toLowerCase();
+// const SCC = ( wrapperChildren ) => {
+//     for ( let i = 0; i < wrapperChildren.length; i++ ) {
+//         const child = wrapperChildren[i];
+//         const slug = child.dataset.title.split( " " ).join( "-" ).toLowerCase();
 
-        child.addEventListener( "click", handleCardClick );
+//         child.addEventListener( "click", handleCardClick );
 
-        child.classList.add( "scc-card" );
-        child.dataset.sccId = `${slug}-${Date.now()}`;
-        child.dataset.slug = slug;
+//         child.classList.add( "scc-card" );
+//         child.dataset.sccId = `${slug}-${Date.now()}`;
+//         child.dataset.slug = slug;
 
-        const {
-            title,
-            tags,
-            content,
-            excerpt,
-            twitter,
-            instagram,
-            sccId
-        } = child.dataset;
+//         const {
+//             title,
+//             tags,
+//             content,
+//             excerpt,
+//             twitter,
+//             instagram,
+//             sccId
+//         } = child.dataset;
 
-        routes[slug] = sccId;
+//         routes[slug] = sccId;
 
-        populateCard( {
-            title,
-            slug,
-            tags,
-            content,
-            excerpt,
-            twitter,
-            instagram,
-            images: getImages( child.dataset ),
-            sccId
-        } );
-    }
+//         populateCard( {
+//             title,
+//             slug,
+//             tags,
+//             content,
+//             excerpt,
+//             twitter,
+//             instagram,
+//             images: getImages( child.dataset ),
+//             sccId
+//         } );
+//     }
 
-    const path = window.location.pathname;
-    const match = /^\/scc\/(.+)$/.exec( path );
+//     const path = window.location.pathname;
+//     const match = /^\/scc\/(.+)$/.exec( path );
     
-    if ( match ) {
-        const id = match[1];
-        const data = document.querySelector( `[data-scc-id=${routes[id]}]` ).dataset;
-        generateBigView( data );
-    }
+//     if ( match ) {
+//         const id = match[1];
+//         const data = document.querySelector( `[data-scc-id=${routes[id]}]` ).dataset;
+//         generateBigView( data );
+//     }
+// };
+const SCC = children => {
+
+    const data = [ ...children ].map( child => {
+        const slug = child.dataset.title.split( " " ).join( "-" ).toLowerCase();
+        const sccId = `${slug}-${Date.now()}`;
+        
+        return {
+            title: child.dataset.title,
+            slug,
+            content: child.dataset.content,
+            excerpt: child.dataset.excerpt,
+            tags: child.dataset.tags.split( "," ).join( " | " ),
+            instagram: child.dataset.instagram,
+            twitter: child.dataset.twitter,
+            sccId
+        };
+    } );
+
+    const cards = data.map( ( card ) =>
+        createElement(
+            "div",
+            { className: "scc-card" },
+            createElement(
+                "header",
+                { className: "scc-header" },
+                createElement( "img", { src: card.dataset.images.split( "," )[0] } )
+            ),
+            createElement(
+                "div",
+                { className: "scc-card-meta" },
+                createElement( "h1", { className: "scc-title" }, card.dataset.title ),
+                createElement(
+                    "div",
+                    { className: "scc-tags" },
+                    createElement( "p", {}, card.dataset.excerpt )
+                )
+            )
+        )
+    );
+
+    return cards;
 };
+
 export default SCC;
 
 const handleCardClick = e => {
@@ -61,32 +104,33 @@ const handleCardClick = e => {
     generateBigView( e.target.dataset );
 };
 
-const populateCard = card => {
-    const header = createElement( "header", "", [ "scc-header" ] );
 
-    if ( card.images.length ) {
-        const headerImage = createElement( "img", "", [ "scc-header-image" ] );
-        headerImage.src = card.images[0];
-        header.appendChild( headerImage );
-    }
+// const populateCard = card => {
+//     const header = createElement( "header", "", [ "scc-header" ] );
 
-    const contentWrapper = createElement( "div", "", [ "scc-card-meta" ] );
+//     if ( card.images.length ) {
+//         const headerImage = createElement( "img", "", [ "scc-header-image" ] );
+//         headerImage.src = card.images[0];
+//         header.appendChild( headerImage );
+//     }
 
-    const title = createElement( "h1", card.title, [ "scc-title" ] );
+//     const contentWrapper = createElement( "div", "", [ "scc-card-meta" ] );
 
-    const tagsContent = card.tags.split( "," ).join( " | " );
-    const tags = createElement( "div", tagsContent, [ "scc-tags" ] );
+//     const title = createElement( "h1", card.title, [ "scc-title" ] );
 
-    appendChildren( contentWrapper, [
-        title,
-        tags
-    ] );
+//     const tagsContent = card.tags.split( "," ).join( " | " );
+//     const tags = createElement( "div", tagsContent, [ "scc-tags" ] );
 
-    appendChildren( document.querySelector( `[data-scc-id=${card.sccId}]` ), [
-        header,
-        contentWrapper,
-    ] );
-};
+//     appendChildren( contentWrapper, [
+//         title,
+//         tags
+//     ] );
+
+//     appendChildren( document.querySelector( `[data-scc-id=${card.sccId}]` ), [
+//         header,
+//         contentWrapper,
+//     ] );
+// };
 
 const generateBigView = card => {
     if ( document.querySelector( ".scc-view-wrapper" ) ) document.querySelector( ".scc-view-wrapper" ).remove();
