@@ -62,7 +62,7 @@ const SCC = children => {
             content: child.dataset.content,
             excerpt: child.dataset.excerpt,
             images: child.dataset.images.split( "," ),
-            tags: child.dataset.tags.split( "," ).join( " | " ),
+            tags: child.dataset.tags.split( "," ),
             instagram: child.dataset.instagram,
             twitter: child.dataset.twitter,
             sccId
@@ -117,7 +117,7 @@ const populateCard = card => (
             "div",
             { className: "scc-card-meta" },
             createElement( "h1", { className: "scc-title" }, card.title ),
-            createElement( "div", { className: "scc-tags" }, createElement( "p", {}, card.excerpt ) )
+            createElement( "div", { className: "scc-tags" }, ...card.tags.map( tag => createElement( "span", {}, tag ) ) )
         )
     )
 );
@@ -131,11 +131,63 @@ const generateBigView = card => {
         { className: "scc-view-wrapper", "data-scc-view": card.slug },
         createElement(
             "div",
-            { className: "scc-view-image" },
-            createElement( "img", { src: card.images[0] } )
+            {
+                className: "scc-view-overlay",
+                onclick: () => {
+                    document.querySelector( ".scc-view-wrapper" ).remove();
+                    window.history.pushState(
+                        {},
+                        document.title,
+                        `${window.location.origin}`
+                    );
+                },
+            },
+            ""
         ),
-        createElement( "h1", { className: "scc-title" }, card.title ),
-        createElement( "div", { className: "scc-tags" }, card.tags )
+        createElement(
+            "div",
+            { className: "scc-view-content-wrapper" },
+            createElement(
+                "div",
+                { className: "scc-view-image" },
+                createElement( "img", { src: card.images[0] } )
+            ),
+            createElement(
+                "div",
+                { className: "scc-view-content" },
+                createElement( "h1", { className: "scc-view-content-title" }, card.title ),
+                createElement(
+                    "div",
+                    { className: "scc-view-content-tags" },
+                    ...card.tags.map( ( tag ) => createElement( "span", {}, tag ) )
+                ),
+                createElement( "p", { className: "scc-view-content-text" }, card.content ),
+                createElement(
+                    "div",
+                    { className: "scc-view-content-socials" },
+                    card.twitter &&
+                        createElement(
+                            "a",
+                            {
+                                className: "scc-social-twitter",
+                                href: `https://twitter.com/${card.twitter}`,
+                                target: "__blank",
+                            },
+                            card.twitter
+                        ),
+                    card.instagram &&
+                        createElement(
+                            "a",
+                            {
+                                className: "scc-social-instagram",
+                                href: `https://instagram.com/${card.instagram}`,
+                                target: "__blank",
+                            },
+                            card.instagram
+                        )
+                )
+            )
+        )
     );
 
     render( wrapper, document.body );

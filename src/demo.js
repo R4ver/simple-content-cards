@@ -5,18 +5,28 @@ const SCCWrapper = document.querySelector( "[data-scc-wrapper]" );
 if ( SCCWrapper ) {
     for ( let i = 0; i < 9; i++ ) {
         const elem = document.createElement( "a" );
+
         const keys = {
             title: commerce.productName(),
             tags: `${commerce.product()}, ${commerce.color()}, ${commerce.productMaterial()}`,
             content: commerce.productDescription(),
-            excerpt: "Some product description shortened down for now",
+            excerpt: "",
             twitter: "R4verLIVE",
             instagram: "R4verLIVE",
-            images: "https://picsum.photos/1280/720", //image.nature(),
+            images: image.nature(),
         };
         
+        var maxLength = 100;
+        var trimmedString = keys.content.substr( 0, maxLength );
+        trimmedString = trimmedString.substr(
+            0,
+            Math.min( trimmedString.length, trimmedString.lastIndexOf( " " ) )
+        );
+
+        keys.excerpt = trimmedString + "...";
+
         const slug = keys.title.split( " " ).join( "-" ).toLowerCase();
-        elem.href = slug;
+        elem.href = `scc/${slug}`;
         Object.keys( keys ).forEach( key => elem.dataset[key] = keys[key] );
 
         elem.dataset.sccId = `${slug}-${Date.now()}`;

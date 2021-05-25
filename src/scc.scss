@@ -1,4 +1,6 @@
 $brand: var(--color-brand);
+$gradient1: var(--gradient-1);
+$gradient2: var(--gradient-2);
 $grid-cols: var(--grid-cols);
 $border-radius: var(--border-radius);
 $box-shadow: var(--box-shadow);
@@ -57,7 +59,7 @@ $box-shadow: var(--box-shadow);
         height: 100%;
         z-index: 1;
 
-        background: linear-gradient(45deg, #ff0051, #49b6ff);
+        background: linear-gradient(45deg, $gradient1, $gradient2);
         opacity: 0.7;
     }
 
@@ -82,6 +84,84 @@ $box-shadow: var(--box-shadow);
 
         .scc-title {
             font-size: 2rem;
+        }
+    }
+}
+
+.scc-view-wrapper {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    z-index: 800;
+
+    .scc-view-overlay {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+        z-index: -1;
+    }
+
+    .scc-view-content-wrapper {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        z-index: 999;
+    }
+
+    .scc-view-image,
+    .scc-view-content {
+        box-shadow: $box-shadow;
+    }
+
+    .scc-view-image {
+        display: flex;
+        align-items: stretch;
+        overflow: hidden;
+
+        border-radius: $border-radius;
+
+        img {
+            object-fit: cover;
+        }
+    }
+
+    .scc-view-content {
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        max-width: 20vw;
+
+        background-color: #fff;
+        border-radius: $border-radius;
+
+        .scc-view-content-title {
+            font-size: 2rem;
+        }
+
+        .scc-view-content-tags span {
+            text-transform: uppercase;
+
+            &:not(:last-child) {
+                padding-right: 6px;
+                border-right: 2px solid #000;
+            }
+        }
+
+        .scc-view-content-text {
+            margin-top: 16px;
+        }
+
+        .scc-view-content-socials {
+            margin-top: 16px;
         }
     }
 }
