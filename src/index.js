@@ -1,5 +1,4 @@
 import SCC from "./scc";
-import { createElement, render } from "./helpers";
 
 /**
  * Check if there's a SCC wrapper before initializing

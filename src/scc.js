@@ -1,4 +1,4 @@
-import { createElement, appendChildren, render } from "./helpers";
+import { createElement, render } from "./helpers";
 
 const routes = {};
 const SCCState = {
