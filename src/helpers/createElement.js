@@ -10,7 +10,7 @@
 //     return elem;
 // };
 
-export const createTextElement = ( text ) => {
+const createTextElement = ( text ) => {
     return {
         type: "TEXT_ELEMENT",
         props: {
@@ -19,6 +19,8 @@ export const createTextElement = ( text ) => {
         }
     };
 };
+
+
 
 export const createElement = ( type, props, ...children ) => {
     return {
@@ -33,10 +35,25 @@ export const createElement = ( type, props, ...children ) => {
 };
 
 export const render = ( element, container ) => {
-    const dom =
-    element.type === "TEXT_ELEMENT"
-        ? document.createTextNode( "" )
-        : document.createElement( element.type );
+    let dom = null;
+
+    switch ( element.type ) {
+        case "TEXT_ELEMENT":
+            dom = document.createTextNode( "" );
+            break;
+
+        case "FRAGMENT":
+            dom = document.createDocumentFragment();
+            break;
+
+        case "<>":
+            dom = document.createDocumentFragment();
+            break;
+
+        default:
+            dom = document.createElement( element.type );
+            break;
+    }
 
     const isProperty = ( key ) => key !== "children";
     Object.keys( element.props )

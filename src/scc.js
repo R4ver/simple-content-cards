@@ -1,6 +1,9 @@
-import { createElement, appendChildren } from "./helpers";
+import { createElement, appendChildren, render } from "./helpers";
 
 const routes = {};
+const SCCState = {
+    cards: []
+};
 
 // const SCC = ( wrapperChildren ) => {
 //     for ( let i = 0; i < wrapperChildren.length; i++ ) {
@@ -38,56 +41,52 @@ const routes = {};
 //         } );
 //     }
 
-//     const path = window.location.pathname;
-//     const match = /^\/scc\/(.+)$/.exec( path );
+// const path = window.location.pathname;
+// const match = /^\/scc\/(.+)$/.exec( path );
     
-//     if ( match ) {
-//         const id = match[1];
-//         const data = document.querySelector( `[data-scc-id=${routes[id]}]` ).dataset;
-//         generateBigView( data );
-//     }
+// if ( match ) {
+//     const id = match[1];
+//     const data = document.querySelector( `[data-scc-id=${routes[id]}]` ).dataset;
+//     generateBigView( data );
+// }
 // };
 const SCC = children => {
 
-    const data = [ ...children ].map( child => {
+    [ ...children ].forEach( child => {
         const slug = child.dataset.title.split( " " ).join( "-" ).toLowerCase();
         const sccId = `${slug}-${Date.now()}`;
         
-        return {
+        const cardData = {
             title: child.dataset.title,
             slug,
             content: child.dataset.content,
             excerpt: child.dataset.excerpt,
+            images: child.dataset.images.split( "," ),
             tags: child.dataset.tags.split( "," ).join( " | " ),
             instagram: child.dataset.instagram,
             twitter: child.dataset.twitter,
             sccId
         };
+
+        routes[slug] = cardData;
+
+        child.classList.add( "scc-card" );
+        child.dataset.slug = slug;
+        child.onclick = handleCardClick;
+        const card = populateCard( cardData );
+        SCCState.cards.push( card );
+
+        render( card, child );
     } );
 
-    const cards = data.map( ( card ) =>
-        createElement(
-            "div",
-            { className: "scc-card" },
-            createElement(
-                "header",
-                { className: "scc-header" },
-                createElement( "img", { src: card.dataset.images.split( "," )[0] } )
-            ),
-            createElement(
-                "div",
-                { className: "scc-card-meta" },
-                createElement( "h1", { className: "scc-title" }, card.dataset.title ),
-                createElement(
-                    "div",
-                    { className: "scc-tags" },
-                    createElement( "p", {}, card.dataset.excerpt )
-                )
-            )
-        )
-    );
+    const path = window.location.pathname;
+    const match = /^\/scc\/(.+)$/.exec( path );
 
-    return cards;
+    if ( match && match[1] !== "undefined" ) {
+        const id = match[1];
+        console.log( routes );
+        generateBigView( routes[id] );
+    }
 };
 
 export default SCC;
@@ -101,66 +100,43 @@ const handleCardClick = e => {
         `${window.location.origin}/scc/${e.target.dataset.slug}`
     );
     
-    generateBigView( e.target.dataset );
+    generateBigView( routes[e.target.dataset.slug] );
 };
 
 
-// const populateCard = card => {
-//     const header = createElement( "header", "", [ "scc-header" ] );
-
-//     if ( card.images.length ) {
-//         const headerImage = createElement( "img", "", [ "scc-header-image" ] );
-//         headerImage.src = card.images[0];
-//         header.appendChild( headerImage );
-//     }
-
-//     const contentWrapper = createElement( "div", "", [ "scc-card-meta" ] );
-
-//     const title = createElement( "h1", card.title, [ "scc-title" ] );
-
-//     const tagsContent = card.tags.split( "," ).join( " | " );
-//     const tags = createElement( "div", tagsContent, [ "scc-tags" ] );
-
-//     appendChildren( contentWrapper, [
-//         title,
-//         tags
-//     ] );
-
-//     appendChildren( document.querySelector( `[data-scc-id=${card.sccId}]` ), [
-//         header,
-//         contentWrapper,
-//     ] );
-// };
+const populateCard = card => (
+    createElement(
+        "<>",
+        {},
+        createElement(
+            "header",
+            { className: "scc-header" },
+            createElement( "img", { src: card.images[0] } )
+        ),
+        createElement(
+            "div",
+            { className: "scc-card-meta" },
+            createElement( "h1", { className: "scc-title" }, card.title ),
+            createElement( "div", { className: "scc-tags" }, createElement( "p", {}, card.excerpt ) )
+        )
+    )
+);
 
 const generateBigView = card => {
+    console.log( card );
     if ( document.querySelector( ".scc-view-wrapper" ) ) document.querySelector( ".scc-view-wrapper" ).remove();
 
-    const wrapper = createElement( "div", "", [ "scc-view-wrapper" ] );
-    wrapper.dataset.sccView = card.slug;
+    const wrapper = createElement(
+        "div",
+        { className: "scc-view-wrapper", "data-scc-view": card.slug },
+        createElement(
+            "div",
+            { className: "scc-view-image" },
+            createElement( "img", { src: card.images[0] } )
+        ),
+        createElement( "h1", { className: "scc-title" }, card.title ),
+        createElement( "div", { className: "scc-tags" }, card.tags )
+    );
 
-    const imageWrapper = createElement( "div", "", [ "scc-view-image" ] );
-    const image = createElement( "img", "" );
-    image.src = getImages( card, 0 );
-    imageWrapper.appendChild( image );
-
-    const title = createElement( "h1", card.title, [ "scc-title" ] );
-
-    const tagsContent = card.tags.split( "," ).join( " | " );
-    const tags = createElement( "div", tagsContent, [ "scc-tags" ] );
-
-    appendChildren( wrapper, [
-        imageWrapper,
-        title,
-        tags
-    ] );
-
-    document.body.appendChild( wrapper );
-};
-
-const getImages = ( card, index ) => {
-    if ( index && !isNaN( index ) ) {
-        return card.images.split( "," )[index];
-    }
-
-    return card.images.split( "," );
+    render( wrapper, document.body );
 };
