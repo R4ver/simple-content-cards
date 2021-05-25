@@ -4,6 +4,10 @@ $gradient2: var(--gradient-2);
 $grid-cols: var(--grid-cols);
 $border-radius: var(--border-radius);
 $box-shadow: var(--box-shadow);
+$overlay-color: var(--overlay-color);
+
+// adnimation vars
+$flyUpStart: 7rem;
 
 .scc-wrapper {
     display: grid;
@@ -106,15 +110,64 @@ $box-shadow: var(--box-shadow);
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: $overlay-color;
         z-index: -1;
+        opacity: 0;
+
+        animation: fadeIn 0.25s forwards;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        .scc-view-close-button {
+            display: block;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 0;
+            margin: 0;
+            width: 40px;
+            height: 40px;
+            outline: none;
+
+            background-color: transparent;
+            border: none;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .scc-view-close-button:before,
+        .scc-view-close-button:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            height: 2px;
+
+            background-color: #fff;
+            transform-origin: center;
+        }
+
+        .scc-view-close-button::before {
+            transform: rotate(-45deg);
+        }
+
+        .scc-view-close-button::after {
+            transform: rotate(45deg);
+        }
     }
 
     .scc-view-content-wrapper {
         display: flex;
         align-items: flex-start;
         gap: 16px;
+        margin-top: $flyUpStart;
         z-index: 999;
+        animation: flyUp 0.25s forwards;
     }
 
     .scc-view-image,
@@ -163,5 +216,25 @@ $box-shadow: var(--box-shadow);
         .scc-view-content-socials {
             margin-top: 16px;
         }
+    }
+}
+
+@keyframes flyUp {
+    from {
+        margin-top: $flyUpStart;
+    }
+
+    to {
+        margin-top: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }

@@ -126,6 +126,8 @@ const generateBigView = card => {
     console.log( card );
     if ( document.querySelector( ".scc-view-wrapper" ) ) document.querySelector( ".scc-view-wrapper" ).remove();
 
+    const closeView = () => document.querySelector( ".scc-view-wrapper" ).remove();
+    
     const wrapper = createElement(
         "div",
         { className: "scc-view-wrapper", "data-scc-view": card.slug },
@@ -134,15 +136,11 @@ const generateBigView = card => {
             {
                 className: "scc-view-overlay",
                 onclick: () => {
-                    document.querySelector( ".scc-view-wrapper" ).remove();
-                    window.history.pushState(
-                        {},
-                        document.title,
-                        `${window.location.origin}`
-                    );
+                    closeView();
+                    window.history.pushState( {}, document.title, `${window.location.origin}` );
                 },
             },
-            ""
+            createElement( "button", { className: "scc-view-close-button", onclick: closeView }, "" )
         ),
         createElement(
             "div",
