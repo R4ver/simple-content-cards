@@ -26,7 +26,7 @@ if ( SCCWrapper ) {
         keys.excerpt = trimmedString + "...";
 
         const slug = keys.title.split( " " ).join( "-" ).toLowerCase();
-        elem.href = `scc/${slug}`;
+        elem.href = `?scc=${slug}`;
         Object.keys( keys ).forEach( key => elem.dataset[key] = keys[key] );
 
         elem.dataset.sccId = `${slug}-${Date.now()}`;

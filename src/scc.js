@@ -36,11 +36,9 @@ const SCC = children => {
         render( card, child );
     } );
 
-    const path = window.location.pathname;
-    const match = /^\/scc\/(.+)$/.exec( path );
-
-    if ( match && match[1] !== "undefined" ) {
-        const id = match[1];
+    let params = new URL( document.location ).searchParams;
+    const id = params.get( "scc" );
+    if ( id ) {
         console.log( "RENDERING BIG VIEW" );
         render( BigView( routes[id] ), document.body );
     }
@@ -54,7 +52,7 @@ const handleCardClick = e => {
     window.history.pushState(
         {},
         e.target.dataset.slug,
-        `${window.location.origin}/scc/${e.target.dataset.slug}`
+        `?scc=${e.target.dataset.slug}`
     );
     
     render( BigView( routes[e.target.dataset.slug] ), document.body );
@@ -78,7 +76,10 @@ const BigView = ( { slug, images, title, tags, content, socials } ) => {
     if ( document.querySelector( ".scc-view-wrapper" ) )
         document.querySelector( ".scc-view-wrapper" ).remove();
 
-    const closeView = () => document.querySelector( ".scc-view-wrapper" ).remove();
+    const closeView = () => {
+        document.querySelector( ".scc-view-wrapper" ).remove();
+        window.history.pushState( {}, document.title, `${window.location.origin + window.location.pathname}` );
+    };
 
     return (
         <div className="scc-view-wrapper" data-scc-view={slug}>
