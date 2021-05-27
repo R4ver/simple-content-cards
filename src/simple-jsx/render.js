@@ -1,39 +1,3 @@
-// export const createElement = ( tag, content, classes ) => {
-//     const elem = document.createElement( tag );
-
-//     if ( content ) 
-//         elem.innerText = content;
-
-//     if ( classes ) 
-//         elem.classList.add( ...classes );
-
-//     return elem;
-// };
-
-const createTextElement = ( text ) => {
-    return {
-        type: "TEXT_ELEMENT",
-        props: {
-            nodeValue: text,
-            children: []
-        }
-    };
-};
-
-
-
-export const createElement = ( type, props, ...children ) => {
-    return {
-        type,
-        props: {
-            ...props,
-            children: children.map( ( child ) =>
-                typeof child === "object" ? child : createTextElement( child )
-            )
-        }
-    };
-};
-
 export const render = ( element, container ) => {
     let dom = null;
 
@@ -56,6 +20,14 @@ export const render = ( element, container ) => {
     }
 
     const isProperty = ( key ) => key !== "children";
+    if ( Array.isArray( element ) ) {
+        element = {
+            props: {
+                children: element
+            }
+        };
+    }
+
     Object.keys( element.props )
         .filter( isProperty )
         .forEach( ( name ) => {
@@ -63,8 +35,9 @@ export const render = ( element, container ) => {
         } );
 
     element.props.children.forEach( ( child ) => render( child, dom ) );
-    
+
     window.requestAnimationFrame( () => {
         container.appendChild( dom );
     } );
 };
+

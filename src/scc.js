@@ -1,55 +1,10 @@
-import { createElement, render } from "./helpers";
+import { sjsx, render, Fragment } from "./simple-jsx";
 
 const routes = {};
 const SCCState = {
     cards: []
 };
 
-// const SCC = ( wrapperChildren ) => {
-//     for ( let i = 0; i < wrapperChildren.length; i++ ) {
-//         const child = wrapperChildren[i];
-//         const slug = child.dataset.title.split( " " ).join( "-" ).toLowerCase();
-
-//         child.addEventListener( "click", handleCardClick );
-
-//         child.classList.add( "scc-card" );
-//         child.dataset.sccId = `${slug}-${Date.now()}`;
-//         child.dataset.slug = slug;
-
-//         const {
-//             title,
-//             tags,
-//             content,
-//             excerpt,
-//             twitter,
-//             instagram,
-//             sccId
-//         } = child.dataset;
-
-//         routes[slug] = sccId;
-
-//         populateCard( {
-//             title,
-//             slug,
-//             tags,
-//             content,
-//             excerpt,
-//             twitter,
-//             instagram,
-//             images: getImages( child.dataset ),
-//             sccId
-//         } );
-//     }
-
-// const path = window.location.pathname;
-// const match = /^\/scc\/(.+)$/.exec( path );
-    
-// if ( match ) {
-//     const id = match[1];
-//     const data = document.querySelector( `[data-scc-id=${routes[id]}]` ).dataset;
-//     generateBigView( data );
-// }
-// };
 const SCC = children => {
 
     [ ...children ].forEach( child => {
@@ -63,8 +18,10 @@ const SCC = children => {
             excerpt: child.dataset.excerpt,
             images: child.dataset.images.split( "," ),
             tags: child.dataset.tags.split( "," ),
-            instagram: child.dataset.instagram,
-            twitter: child.dataset.twitter,
+            socials: {
+                twitter: child.dataset.twitter,
+                instagram: child.dataset.instagram
+            },
             sccId
         };
 
@@ -85,7 +42,7 @@ const SCC = children => {
     if ( match && match[1] !== "undefined" ) {
         const id = match[1];
         console.log( routes );
-        generateBigView( routes[id] );
+        render( BigView( routes[id] ), document.body );
     }
 };
 
@@ -100,93 +57,55 @@ const handleCardClick = e => {
         `${window.location.origin}/scc/${e.target.dataset.slug}`
     );
     
-    generateBigView( routes[e.target.dataset.slug] );
+    render( BigView( routes[e.target.dataset.slug] ), document.body );
 };
 
-
-const populateCard = card => (
-    createElement(
-        "<>",
-        {},
-        createElement(
-            "header",
-            { className: "scc-header" },
-            createElement( "img", { src: card.images[0] } )
-        ),
-        createElement(
-            "div",
-            { className: "scc-card-meta" },
-            createElement( "h1", { className: "scc-title" }, card.title ),
-            createElement( "div", { className: "scc-tags" }, ...card.tags.map( tag => createElement( "span", {}, tag ) ) )
-        )
-    )
+const populateCard = ( { images, tags, title } ) => (
+    <>
+        <header className="scc-header">
+            <img src={images[0]} />
+        </header>
+        <div className="scc-card-meta">
+            <h1 className="scc-title">{title}</h1>
+            <div className="scc-tags">
+                {tags.map( tag => <span>{tag}</span> )}
+            </div>
+        </div>
+    </>
 );
 
-const generateBigView = card => {
-    console.log( card );
-    if ( document.querySelector( ".scc-view-wrapper" ) ) document.querySelector( ".scc-view-wrapper" ).remove();
+const BigView = ( { slug, images, title, tags, content, socials } ) => {
+    if ( document.querySelector( ".scc-view-wrapper" ) )
+        document.querySelector( ".scc-view-wrapper" ).remove();
 
     const closeView = () => document.querySelector( ".scc-view-wrapper" ).remove();
-    
-    const wrapper = createElement(
-        "div",
-        { className: "scc-view-wrapper", "data-scc-view": card.slug },
-        createElement(
-            "div",
-            {
-                className: "scc-view-overlay",
-                onclick: () => {
-                    closeView();
-                    window.history.pushState( {}, document.title, `${window.location.origin}` );
-                },
-            },
-            createElement( "button", { className: "scc-view-close-button", onclick: closeView }, "" )
-        ),
-        createElement(
-            "div",
-            { className: "scc-view-content-wrapper" },
-            createElement(
-                "div",
-                { className: "scc-view-image" },
-                createElement( "img", { src: card.images[0] } )
-            ),
-            createElement(
-                "div",
-                { className: "scc-view-content" },
-                createElement( "h1", { className: "scc-view-content-title" }, card.title ),
-                createElement(
-                    "div",
-                    { className: "scc-view-content-tags" },
-                    ...card.tags.map( ( tag ) => createElement( "span", {}, tag ) )
-                ),
-                createElement( "p", { className: "scc-view-content-text" }, card.content ),
-                createElement(
-                    "div",
-                    { className: "scc-view-content-socials" },
-                    card.twitter &&
-                        createElement(
-                            "a",
-                            {
-                                className: "scc-social-twitter",
-                                href: `https://twitter.com/${card.twitter}`,
-                                target: "__blank",
-                            },
-                            card.twitter
-                        ),
-                    card.instagram &&
-                        createElement(
-                            "a",
-                            {
-                                className: "scc-social-instagram",
-                                href: `https://instagram.com/${card.instagram}`,
-                                target: "__blank",
-                            },
-                            card.instagram
-                        )
-                )
-            )
-        )
-    );
 
-    render( wrapper, document.body );
+    return (
+        <div className="scc-view-wrapper" data-scc-view={slug}>
+            <div className="scc-view-overlay" onClick={closeView}>
+                <button className="scc-view-close-button"></button>
+            </div>
+            <div className="scc-view-content-wrapper">
+                <div className="scc-view-image">
+                    <img src={images[0]} />
+                </div>
+                <div className="scc-view-content">
+                    <h1 className="scc-view-content-title">{title}</h1>
+                    <div className="scc-view-content-tags">
+                        {tags.map( ( tag ) => (
+                            <span>{tag}</span>
+                        ) )}
+                    </div>
+                    <div className="scc-view-content-text">
+                        <p>{content}</p>
+                    </div>
+                    <div className="scc-view-content-socials">
+                        {Object.keys( socials ).map( social => (
+                            <a key={social} href={`https://${social}/${socials[social]}`}>{social}</a>
+                        ) )}
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };

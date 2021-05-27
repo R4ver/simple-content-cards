@@ -1,2 +1,2 @@
-export * from "./createElement";
+export * from "../simplejsx";
 export * from "./appendChildren";

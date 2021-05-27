@@ -1,4 +1,5 @@
 {
+    "parser": "babel-eslint",
     "env": {
         "browser": true,
         "es2021": true
@@ -15,6 +16,7 @@
         "semi": ["error", "always"],
         "space-in-parens": ["error", "always"],
         "object-curly-spacing": ["error", "always"],
-        "array-bracket-spacing": ["error", "always"]
+        "array-bracket-spacing": ["error", "always"],
+        "no-unused-vars": ["error", { "varsIgnorePattern": "(sjsx|Fragment)" }]
     }
 }
