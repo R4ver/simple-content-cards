@@ -1,6 +1,15 @@
 export const render = ( element, container ) => {
     let dom = null;
 
+    if ( Array.isArray( element ) ) {
+        element = {
+            type: "FRAGMENT",
+            props: {
+                children: element
+            }
+        };
+    }
+
     switch ( element.type ) {
         case "TEXT_ELEMENT":
             dom = document.createTextNode( "" );
@@ -34,7 +43,10 @@ export const render = ( element, container ) => {
             dom[name] = element.props[name];
         } );
 
-    element.props.children.forEach( ( child ) => render( child, dom ) );
+    element.props.children.forEach( ( child ) => {
+        console.log( "RENDER CHILD: ", child );
+        render( child, dom );
+    } );
 
     window.requestAnimationFrame( () => {
         container.appendChild( dom );

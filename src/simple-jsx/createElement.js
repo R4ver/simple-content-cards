@@ -23,6 +23,8 @@ const createTextElement = ( text ) => {
 
 
 export const createElement = ( type, props = {}, ...children ) => {
+    // console.log( type, props, children );
+
     if ( typeof type === "function" && type.name === "Fragment" ) {
         props = {};
         type = "FRAGMENT";
@@ -35,11 +37,16 @@ export const createElement = ( type, props = {}, ...children ) => {
         type,
         props: {
             ...props,
-            children: children.map( ( child ) => 
-                typeof child === "object" ? child : createTextElement( child )
-            )
+            children: children.map( ( child ) => {
+                return typeof child === "object" ? child : createTextElement( child );
+            } )
         }
     };
 };
 
-export const Fragment = ( props ) => props.children;
+export const Fragment = ( props ) => ( {
+    type: "FRAGMENT",
+    props: {
+        children: props.children
+    }
+} );

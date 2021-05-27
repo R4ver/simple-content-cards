@@ -41,7 +41,7 @@ const SCC = children => {
 
     if ( match && match[1] !== "undefined" ) {
         const id = match[1];
-        console.log( routes );
+        console.log( "RENDERING BIG VIEW" );
         render( BigView( routes[id] ), document.body );
     }
 };
@@ -101,7 +101,9 @@ const BigView = ( { slug, images, title, tags, content, socials } ) => {
                     </div>
                     <div className="scc-view-content-socials">
                         {Object.keys( socials ).map( social => (
-                            <a key={social} href={`https://${social}/${socials[social]}`}>{social}</a>
+                            <a key={social} href={`https://${social}/${socials[social]}`}>
+                                <i className={`fab fa-${social}`} />
+                            </a>
                         ) )}
                     </div>
                 </div>

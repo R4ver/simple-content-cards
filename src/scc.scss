@@ -217,6 +217,16 @@ $flyUpStart: 7rem;
             margin-top: 16px;
         }
     }
+
+    .scc-view-content-socials {
+        display: flex;
+        gap: 16px;
+
+        a {
+            color: $brand;
+            font-size: 2rem;
+        }
+    }
 }
 
 @keyframes flyUp {
