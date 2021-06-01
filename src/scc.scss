@@ -13,6 +13,38 @@ $fw-bold: 700;
 // adnimation vars
 $flyUpStart: 7rem;
 
+@mixin responsive($size) {
+    @if ($size == "desktop") {
+        @media (min-width: 1281px) {
+            @content;
+        }
+    } @else if ($size == "large-desktop") {
+        @media only screen and (min-width: 2000px) {
+            @content;
+        }
+    } @else if ($size == "laptop-desktop") {
+        @media (min-width: 1025px) and (max-width: 1280px) {
+            @content;
+        }
+    } @else if ($size == "tablet") {
+        @media (max-width: 1024px) {
+            @content;
+        }
+    } @else if ($size == "tablet-landscape") {
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+            @content;
+        }
+    } @else if ($size == "low-res-tablet") {
+        @media (min-width: 481px) and (max-width: 767px) {
+            @content;
+        }
+    } @else if ($size == "mobile") {
+        @media (max-width: 480px) {
+            @content;
+        }
+    }
+}
+
 html.scc-no-scroll {
     overflow: hidden;
 
@@ -27,12 +59,34 @@ html.scc-no-scroll {
     font-weight: $fw-normal;
 
     font-size: 16px;
+
+    .scc-title {
+        font-size: 1.8em;
+    }
+
+    @include responsive("large-desktop") {
+        font-size: 20px;
+    }
+
+    @include responsive("mobile") {
+        .scc-title {
+            font-size: 1.5em;
+        }
+    }
 }
 
 .scc-wrapper {
     display: grid;
     grid-template-columns: repeat($grid-cols, 1fr);
     gap: 16px;
+
+    @include responsive("tablet") {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include responsive("mobile") {
+        grid-template-columns: 1fr;
+    }
 
     .scc-card {
         display: flex;
@@ -110,10 +164,6 @@ html.scc-no-scroll {
         pointer-events: none;
 
         color: #fff;
-
-        .scc-title {
-            font-size: 2em;
-        }
     }
 }
 
@@ -199,6 +249,18 @@ html.scc-no-scroll {
         z-index: 999;
         height: 90vh;
         animation: flyUp 0.25s forwards;
+
+        @include responsive("tablet") {
+            flex-direction: column-reverse;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @include responsive("mobile") {
+            flex-direction: column-reverse;
+            justify-content: center;
+            align-items: center;
+        }
     }
 
     .scc-view-image,
@@ -213,6 +275,10 @@ html.scc-no-scroll {
         overflow: hidden;
 
         border-radius: $border-radius;
+
+        @include responsive("mobile") {
+            height: auto;
+        }
 
         img {
             height: 100%;
@@ -230,8 +296,12 @@ html.scc-no-scroll {
         background-color: #fff;
         border-radius: $border-radius;
 
-        .scc-view-content-title {
-            font-size: 1.8em;
+        @include responsive("tablet") {
+            max-width: none;
+        }
+
+        @include responsive("mobile") {
+            max-width: none;
         }
 
         .scc-view-content-tags span {

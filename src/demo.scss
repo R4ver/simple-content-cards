@@ -1,3 +1,35 @@
+@mixin responsive($size) {
+    @if ($size == "desktop") {
+        @media (min-width: 1281px) {
+            @content;
+        }
+    } @else if ($size == "laptop-desktop") {
+        @media (min-width: 1025px) and (max-width: 1280px) {
+            @content;
+        }
+    } @else if ($size == "tablet-portrait") {
+        @media (min-width: 768px) and (max-width: 1024px) {
+            @content;
+        }
+    } @else if ($size == "tablet-landscape") {
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+            @content;
+        }
+    } @else if ($size == "low-res-tablet") {
+        @media (min-width: 481px) and (max-width: 767px) {
+            @content;
+        }
+    } @else if ($size == "low-res-tablet") {
+        @media (min-width: 481px) and (max-width: 767px) {
+            @content;
+        }
+    } @else if ($size == "mobile") {
+        @media (min-width: 320px) and (max-width: 480px) {
+            @content;
+        }
+    }
+}
+
 html,
 body,
 p,
@@ -83,7 +115,7 @@ th:not([align]) {
 
 html {
     background-color: white;
-    font-size: 25px;
+    font-size: 16px;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     min-width: 300px;
@@ -230,6 +262,12 @@ table th {
     margin: 0 auto;
     margin-bottom: 80px;
     max-width: 75vw;
+
+    @include responsive("mobile") {
+        margin: auto;
+        padding: 16px;
+        max-width: none;
+    }
 
     .page-title {
         margin: 3rem 0;

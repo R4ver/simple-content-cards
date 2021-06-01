@@ -95,7 +95,7 @@ const BigView = ( { slug, images, title, tags, content, socials } ) => {
                     <img src={images[0]} />
                 </div>
                 <div className="scc-view-content">
-                    <h1 className="scc-view-content-title">{title}</h1>
+                    <h1 className="scc-view-content-title scc-title">{title}</h1>
                     <div className="scc-view-content-tags">
                         {tags.map( ( tag ) => (
                             <span>{tag}</span>
