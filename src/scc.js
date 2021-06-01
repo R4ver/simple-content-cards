@@ -8,19 +8,20 @@ const SCCState = {
 const SCC = children => {
 
     [ ...children ].forEach( child => {
-        const slug = child.dataset.title.split( " " ).join( "-" ).toLowerCase();
+        const { title, content, excerpt, images, tags, twitter, instagram } = child.dataset;
+        const slug = title.split( " " ).join( "-" ).toLowerCase();
         const sccId = `${slug}-${Date.now()}`;
         
         const cardData = {
-            title: child.dataset.title,
+            title,
             slug,
-            content: child.dataset.content,
-            excerpt: child.dataset.excerpt,
-            images: child.dataset.images.split( "," ),
-            tags: child.dataset.tags.split( "," ),
+            content,
+            excerpt,
+            images: images.split( "," ),
+            tags: tags.split( "," ),
             socials: {
-                twitter: child.dataset.twitter,
-                instagram: child.dataset.instagram
+                twitter,
+                instagram
             },
             sccId
         };
@@ -61,7 +62,7 @@ const handleCardClick = e => {
 const populateCard = ( { images, tags, title } ) => (
     <>
         <header className="scc-header">
-            <img src={images[0]} />
+            <img className="scc-header-image" src={images[0]} />
         </header>
         <div className="scc-card-meta">
             <h1 className="scc-title">{title}</h1>
@@ -79,7 +80,10 @@ const BigView = ( { slug, images, title, tags, content, socials } ) => {
     const closeView = () => {
         document.querySelector( ".scc-view-wrapper" ).remove();
         window.history.pushState( {}, document.title, `${window.location.origin + window.location.pathname}` );
+        document.documentElement.classList.remove( "scc-no-scroll" );
     };
+
+    document.documentElement.classList.add( "scc-no-scroll" );
 
     return (
         <div className="scc-view-wrapper" data-scc-view={slug}>

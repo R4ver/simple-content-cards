@@ -1,13 +1,33 @@
-$brand: var(--color-brand);
-$gradient1: var(--gradient-1);
-$gradient2: var(--gradient-2);
-$grid-cols: var(--grid-cols);
-$border-radius: var(--border-radius);
-$box-shadow: var(--box-shadow);
-$overlay-color: var(--overlay-color);
+$brand: var(--scc-brand);
+// $gradient1: var(--gradient-1);
+// $gradient2: var(--gradient-2);
+$grid-cols: var(--scc-grid-cols);
+$border-radius: var(--scc-border-radius);
+$box-shadow: var(--scc-card-box-shadow);
+$overlay-color: var(--scc-big-view-overlay-color);
+
+$fontFamily: "Open Sans", sans-serif;
+$fw-normal: 400;
+$fw-bold: 700;
 
 // adnimation vars
 $flyUpStart: 7rem;
+
+html.scc-no-scroll {
+    overflow: hidden;
+
+    body {
+        overflow: hidden;
+    }
+}
+
+.scc-wrapper,
+.scc-view-wrapper {
+    font-family: $fontFamily;
+    font-weight: $fw-normal;
+
+    font-size: 16px;
+}
 
 .scc-wrapper {
     display: grid;
@@ -29,9 +49,10 @@ $flyUpStart: 7rem;
         border-radius: $border-radius;
         box-shadow: $box-shadow;
 
-        img {
-            height: auto;
-        }
+        // img {
+        //     height: auto;
+        //     width: 100%;
+        // }
     }
 
     .scc-header {
@@ -49,23 +70,27 @@ $flyUpStart: 7rem;
         height: 100%;
         z-index: 1;
 
-        background: linear-gradient(to top, $brand, transparent);
-        opacity: 0.5;
+        background: linear-gradient(to top, var(--scc-card-overlay), transparent);
+        opacity: 0.6;
     }
 
-    .scc-header.has-gradient::after {
-        content: "";
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1;
+    // Implement gradient overlays at a later point when some
+    // decisions regarding UX has been made
 
-        background: linear-gradient(45deg, $gradient1, $gradient2);
-        opacity: 0.7;
-    }
+    // &.has-header-gradient .scc-header::after {
+    //     content: "";
+    //     display: block;
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //     width: 100%;
+    //     height: 100%;
+    //     z-index: 1;
+
+    //     background: linear-gradient(45deg, $gradient1, $gradient2);
+    //     mix-blend-mode: screen;
+    //     opacity: 0.7;
+    // }
 
     .scc-header-image {
         width: 100%;
@@ -87,7 +112,7 @@ $flyUpStart: 7rem;
         color: #fff;
 
         .scc-title {
-            font-size: 2rem;
+            font-size: 2em;
         }
     }
 }
@@ -95,13 +120,18 @@ $flyUpStart: 7rem;
 .scc-view-wrapper {
     display: flex;
     position: fixed;
-    top: 0;
-    left: 0;
     align-items: center;
     justify-content: center;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    padding-top: 6vh;
     width: 100%;
     height: 100%;
+    max-height: calc(100vh - 2rem);
     z-index: 800;
+
+    color: #000;
 
     .scc-view-overlay {
         display: block;
@@ -167,6 +197,7 @@ $flyUpStart: 7rem;
         gap: 16px;
         margin-top: $flyUpStart;
         z-index: 999;
+        height: 90vh;
         animation: flyUp 0.25s forwards;
     }
 
@@ -178,11 +209,13 @@ $flyUpStart: 7rem;
     .scc-view-image {
         display: flex;
         align-items: stretch;
+        height: 100%;
         overflow: hidden;
 
         border-radius: $border-radius;
 
         img {
+            height: 100%;
             object-fit: cover;
         }
     }
@@ -190,22 +223,24 @@ $flyUpStart: 7rem;
     .scc-view-content {
         display: flex;
         flex-direction: column;
-        padding: 16px;
+        padding: 30px;
+        padding-bottom: 24px;
         max-width: 20vw;
 
         background-color: #fff;
         border-radius: $border-radius;
 
         .scc-view-content-title {
-            font-size: 2rem;
+            font-size: 1.8em;
         }
 
         .scc-view-content-tags span {
-            text-transform: uppercase;
+            color: $brand;
+            text-transform: capitalize;
 
             &:not(:last-child) {
                 padding-right: 6px;
-                border-right: 2px solid #000;
+                border-right: 2px solid rgba(#000, 0.2);
             }
         }
 
@@ -224,7 +259,7 @@ $flyUpStart: 7rem;
 
         a {
             color: $brand;
-            font-size: 2rem;
+            font-size: 2em;
         }
     }
 }
@@ -235,7 +270,7 @@ $flyUpStart: 7rem;
     }
 
     to {
-        margin-top: 0;
+        margin-top: 40px;
     }
 }
 

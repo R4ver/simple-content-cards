@@ -1,10 +1,22 @@
-import { commerce, image } from "faker";
+import { commerce } from "faker";
 
 const SCCWrapper = document.querySelector( "[data-scc-wrapper]" );
 
 if ( SCCWrapper ) {
     for ( let i = 0; i < 9; i++ ) {
         const elem = document.createElement( "a" );
+
+        const sizes = [
+            { x: 1920, y: 1080 },
+            { x: 1280, y: 720 },
+            { x: 800, y : 600 },
+            { x: 400, y: 600 },
+            { x: 500, y: 1080 },
+            { x: 500, y: 500 }
+        ];
+
+        const size = sizes[Math.floor( Math.random() * sizes.length )];
+        const imageUrl = `https://picsum.photos/${size.x}/${size.y}`;
 
         const keys = {
             title: commerce.productName(),
@@ -13,7 +25,7 @@ if ( SCCWrapper ) {
             excerpt: "",
             twitter: "R4verLIVE",
             instagram: "R4verLIVE",
-            images: image.nature(),
+            images: imageUrl,
         };
         
         var maxLength = 100;
