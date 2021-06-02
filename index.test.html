@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+
+        <title>Unique page title - My Site</title>
+
+        <script type="module">
+            document.documentElement.classList.remove("no-js");
+            document.documentElement.classList.add("js");
+        </script>
+
+        <!-- <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/print.css" media="print"> -->
+
+        <meta name="description" content="Page description" />
+        <meta property="og:title" content="Unique page title - My Site" />
+        <meta property="og:description" content="Page description" />
+        <meta property="og:image" content="https://www.mywebsite.com/image.jpg" />
+        <meta property="og:image:alt" content="Image description" />
+        <meta property="og:locale" content="en_GB" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta property="og:url" content="https://www.mywebsite.com/page" />
+        <link rel="canonical" href="https://www.mywebsite.com/page" />
+
+        <!-- <link rel="icon" href="/favicon.ico"> -->
+        <!-- <link rel="icon" href="/favicon.svg" type="image/svg+xml"> -->
+        <!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png"> -->
+        <!-- <link rel="manifest" href="/my.webmanifest"> -->
+        <meta name="theme-color" content="#ff1961" />
+        <style>
+            :root {
+                --scc-brand: #ff0000;
+                --scc-card-overlay: #000;
+                --scc-grid-cols: 3;
+                --scc-border-radius: 5px;
+                --scc-card-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.24);
+                --scc-big-view-overlay-color: rgba(0, 0, 0, 0.8);
+            }
+        </style>
+        <link rel="stylesheet" href="./src/demo.scss" />
+        <link rel="stylesheet" href="./src/scc.scss" />
+    </head>
+
+    <body>
+        <div id="innerContent">
+            <div id="page-header">
+                <h1 class="page-title">Portfolio</h1>
+                <h2 class="page-subtitle">My super awesome portfolio</h2>
+            </div>
+            <div data-scc-wrapper>
+                <a
+                    data-title="Rustic Fresh Towels"
+                    data-tags="Bike, tan, Soft"
+                    data-content="The beautiful range of Apple Naturalé that has an <script>alert('xss');</script> exciting mix of natural ingredients. With the Goodness of 100% Natural Ingredients"
+                    data-excerpt="Some product description shortened down for now"
+                    data-twitter="R4verLIVE"
+                    data-images="http://placeimg.com/640/480/nature"
+                    onmouseover="alert('xxs')"
+                    onmouseup="alert('xxs')"
+                    onclick="alert('xxs')"
+                    onmousedown="alert('xxs')"
+                    onmousemove="alert('xxs')"
+                >
+                </a>
+            </div>
+        </div>
+        <script>
+            var SPCConfig = {
+                theme: {
+                    dark: true,
+                    brand: "#ff1961",
+                },
+            };
+        </script>
+        <script src="./src/demo.js"></script>
+        <script src="./src/index.js"></script>
+    </body>
+</html>

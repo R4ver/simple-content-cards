@@ -11,21 +11,26 @@ const createTextElement = ( text ) => {
 
 
 export const createElement = ( type, props = {}, ...children ) => {
-    // console.log( type, props, children );
-
-    if ( typeof type === "function" && type.name === "Fragment" ) {
-        props = {};
-        type = "FRAGMENT";
-    }
-
-    if ( props && props.onClick ) 
-        props.onclick = props.onClick;
-    
-    return {
-        type,
+    let sjsxElement = {
+        type: type,
         props: {
             ...props,
-            children: children.map( ( child ) => {
+            children: props && props.children ? props.children : children
+        },
+    };
+
+    if ( typeof type === "function" ) {
+        sjsxElement = sjsxElement.type( sjsxElement.props );
+    }
+
+    if ( sjsxElement.props && sjsxElement.props.onClick ) 
+        sjsxElement.props.onclick = sjsxElement.props.onClick;
+
+    return {
+        type: sjsxElement.type,
+        props: {
+            ...sjsxElement.props,
+            children: sjsxElement.props.children.map( ( child ) => {
                 return typeof child === "object" ? child : createTextElement( child );
             } )
         }
@@ -35,6 +40,6 @@ export const createElement = ( type, props = {}, ...children ) => {
 export const Fragment = ( props ) => ( {
     type: "FRAGMENT",
     props: {
-        children: props.children
-    }
+        children: props.children,
+    },
 } );

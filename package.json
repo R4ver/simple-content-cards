@@ -7,7 +7,9 @@
     "license": "MIT",
     "private": false,
     "scripts": {
-        "start": "parcel index.html"
+        "start": "parcel index.html",
+        "build": "rm -rf ./dist && parcel build --no-content-hash ./src/index.js ./src/demo.js ./src/demo.scss ./src/scc.scss",
+        "build:test": "rm -rf ./build-test && parcel build index.test.html --dist-dir ./build-test --public-url=./"
     },
     "alias": {
         "Components": "./src/components",
@@ -19,6 +21,7 @@
     "devDependencies": {
         "@babel/core": "^7.0.0-0",
         "@babel/plugin-transform-react-jsx": "^7.14.3",
+        "@babel/preset-env": "^7.14.4",
         "@parcel/transformer-sass": "2.0.0-nightly.680",
         "babel-eslint": "^10.1.0",
         "eslint": "^7.26.0",

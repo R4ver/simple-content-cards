@@ -60,7 +60,33 @@ html.scc-no-scroll {
 
     font-size: 16px;
 
+    p,
+    ol,
+    ul,
+    li,
+    dl,
+    dt,
+    dd,
+    blockquote,
+    figure,
+    fieldset,
+    legend,
+    textarea,
+    pre,
+    iframe,
+    hr,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 0;
+        padding: 0;
+    }
+
     .scc-title {
+        text-align-last: left;
         font-size: 1.8em;
     }
 
@@ -179,7 +205,7 @@ html.scc-no-scroll {
     width: 100%;
     height: 100%;
     max-height: calc(100vh - 2rem);
-    z-index: 800;
+    z-index: 10000;
 
     color: #000;
 
@@ -314,8 +340,16 @@ html.scc-no-scroll {
             }
         }
 
+        .scc-title {
+            color: #000;
+        }
+
         .scc-view-content-text {
             margin-top: 16px;
+
+            p {
+                color: #000;
+            }
         }
 
         .scc-view-content-socials {

@@ -1,14 +1,29 @@
 import { sjsx, render, Fragment } from "./simple-jsx";
 
 const routes = {};
+const socialMedia = {
+    twitter: {
+        id: "twitter",
+        vendor: "twitter.com",
+        user: null
+    },
+    instagram: {
+        id: "instagram",
+        vendor: "instagram.com",
+        user: null
+    }
+};
 
 const SCC = children => {
 
     [ ...children ].forEach( child => {
+        eventSanitize( child );
+
         const { title, content, excerpt, images, tags, twitter, instagram } = child.dataset;
         const slug = title.split( " " ).join( "-" ).toLowerCase();
         const sccId = `${slug}-${Date.now()}`;
-        
+        const social = { twitter, instagram };
+
         const cardData = {
             title,
             slug,
@@ -16,10 +31,12 @@ const SCC = children => {
             excerpt,
             images: images.split( "," ),
             tags: tags.split( "," ),
-            socials: {
-                twitter,
-                instagram
-            },
+            socials: Object.keys( social ).map( i => {
+                if ( social[i] !== undefined ) {
+                    socialMedia[i].user = social[i];
+                    return socialMedia[i];
+                }
+            } ).filter( i => i !== undefined ),
             sccId
         };
 
@@ -28,6 +45,7 @@ const SCC = children => {
         child.classList.add( "scc-card" );
         child.dataset.slug = slug;
         child.onclick = handleCardClick;
+        child.href = `?scc=${slug}`;
 
         render( <PopulateCard {...cardData} />, child );
     } );
@@ -35,7 +53,6 @@ const SCC = children => {
     let params = new URL( document.location ).searchParams;
     const id = params.get( "scc" );
     if ( id ) {
-        console.log( "RENDERING BIG VIEW" );
         render( <BigView {...routes[id]} />, document.body );
     }
 };
@@ -104,9 +121,14 @@ const BigView = ( { slug, images, title, tags, content, socials } ) => {
                         <p>{content}</p>
                     </div>
                     <div className="scc-view-content-socials">
-                        {Object.keys( socials ).map( social => (
-                            <a key={social} href={`https://${social}/${socials[social]}`}>
-                                <i className={`fab fa-${social}`} />
+                        {socials.map( social => (
+                            <a
+                                key={social}
+                                href={`https://${social.vendor}/${social.user}`}
+                                target="__blank"
+                                rel="noopener noreferrer"
+                            >
+                                <i className={`fab fa-${social.id}`} />
                             </a>
                         ) )}
                     </div>
@@ -114,4 +136,8 @@ const BigView = ( { slug, images, title, tags, content, socials } ) => {
             </div>
         </div>
     );
+};
+
+const eventSanitize = elem => {
+    [ "onmouseover", "onmouseup", "onclick", "onmousedown", "onmousemove" ].forEach( e => elem.removeAttribute( e ) );
 };
