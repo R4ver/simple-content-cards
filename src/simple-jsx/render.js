@@ -1,4 +1,6 @@
 export const render = ( element, container ) => {
+    // console.log( typeof element.type === "function" && element.type( element.props ) );
+    // console.log( element );
     let dom = null;
 
     if ( Array.isArray( element ) ) {
@@ -8,6 +10,10 @@ export const render = ( element, container ) => {
                 children: element
             }
         };
+    }
+
+    if ( typeof element.type === "function" ) {
+        element = element.type( element.props );
     }
 
     switch ( element.type ) {

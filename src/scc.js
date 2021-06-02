@@ -1,9 +1,6 @@
 import { sjsx, render, Fragment } from "./simple-jsx";
 
 const routes = {};
-const SCCState = {
-    cards: []
-};
 
 const SCC = children => {
 
@@ -31,17 +28,15 @@ const SCC = children => {
         child.classList.add( "scc-card" );
         child.dataset.slug = slug;
         child.onclick = handleCardClick;
-        const card = populateCard( cardData );
-        SCCState.cards.push( card );
 
-        render( card, child );
+        render( <PopulateCard {...cardData} />, child );
     } );
 
     let params = new URL( document.location ).searchParams;
     const id = params.get( "scc" );
     if ( id ) {
         console.log( "RENDERING BIG VIEW" );
-        render( BigView( routes[id] ), document.body );
+        render( <BigView {...routes[id]} />, document.body );
     }
 };
 
@@ -56,18 +51,22 @@ const handleCardClick = e => {
         `?scc=${e.target.dataset.slug}`
     );
     
-    render( BigView( routes[e.target.dataset.slug] ), document.body );
+    render( <BigView {...routes[e.target.dataset.slug]} />, document.body );
 };
 
-const populateCard = ( { images, tags, title } ) => (
+export const Header = ( { className, image } ) => (
+    <header className={className}>
+        <img className="scc-header-image" src={image} />
+    </header>
+);
+
+const PopulateCard = ( { images, tags, title } ) => (
     <>
-        <header className="scc-header">
-            <img className="scc-header-image" src={images[0]} />
-        </header>
+        <Header className="scc-header" image={images[0]} />
         <div className="scc-card-meta">
             <h1 className="scc-title">{title}</h1>
             <div className="scc-tags">
-                {tags.map( tag => <span>{tag}</span> )}
+                {tags.map( ( tag, index ) => <span key={index}>{tag}</span> )}
             </div>
         </div>
     </>
@@ -97,8 +96,8 @@ const BigView = ( { slug, images, title, tags, content, socials } ) => {
                 <div className="scc-view-content">
                     <h1 className="scc-view-content-title scc-title">{title}</h1>
                     <div className="scc-view-content-tags">
-                        {tags.map( ( tag ) => (
-                            <span>{tag}</span>
+                        {tags.map( ( tag, index ) => (
+                            <span key={index}>{tag}</span>
                         ) )}
                     </div>
                     <div className="scc-view-content-text">
